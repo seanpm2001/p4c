@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+OPTION (ENABLE_PROTOBUF_STATIC "Link against Protobuf statically" ON)
+include(Protobuf)
+p4c_obtain_protobuf()
+
+include_directories(SYSTEM ${PROTOBUF_INCLUDE_DIRS})
+
 # The standard P4Runtime protocol buffers message definitions live in the PI
 # repo, which is included in this repo as a submodule.
 set (P4RUNTIME_STD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/p4runtime/proto)

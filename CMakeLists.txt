@@ -36,10 +36,10 @@ OPTION (ENABLE_EBPF "Build the EBPF backend (required for the full test suite)" 
 OPTION (ENABLE_UBPF "Build the uBPF backend (required for the full test suite)" ON)
 OPTION (ENABLE_DPDK "Build the DPDK backend (required for the full test suite)" ON)
 OPTION (ENABLE_P4TC "Build the P4TC backend" ON)
+OPTION (ENABLE_CONTROL_PLANE "Build the control-plane library with Protobuf" ON)
 OPTION (ENABLE_P4TEST "Build the P4Test backend (required for the full test suite)" ON)
 OPTION (ENABLE_TEST_TOOLS "Build the P4Tools development platform" OFF)
 OPTION (ENABLE_P4C_GRAPHS "Build the p4c-graphs backend" ON)
-OPTION (ENABLE_PROTOBUF_STATIC "Link against Protobuf statically" ON)
 OPTION (ENABLE_GC "Use libgc" ON)
 OPTION (ENABLE_MULTITHREAD "Use multithreading" OFF)
 OPTION (ENABLE_LTO "Enable Link Time Optimization (LTO)" OFF)
@@ -113,7 +113,7 @@ if (CMAKE_UNITY_BUILD)
   set(CMAKE_UNITY_BUILD_BATCH_SIZE 10 CACHE UNINITIALIZED "Set the unity build batch size.")
 endif ()
 
-# Always build position-independent code. This is important when linking with Protobuf.
+# Always build position-independent code. This can be important when linking with Protobuf etc.
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # set the required options for a static release build
@@ -136,8 +136,6 @@ endif ()
 find_package (PythonInterp 3 REQUIRED)
 find_package (FLEX 2.0 REQUIRED)
 find_package (BISON 3.0 REQUIRED)
-include(Protobuf)
-p4c_obtain_protobuf()
 
 # The boost graph headers are optional and only required by the graphs back end.
 find_package (Boost QUIET COMPONENTS graph)
@@ -161,7 +159,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 set (P4C_LIB_DEPS "${P4C_LIB_DEPS};${CMAKE_THREAD_LIBS_INIT}")
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
-include_directories(SYSTEM ${PROTOBUF_INCLUDE_DIRS})
 include_directories(SYSTEM ${LIBGC_INCLUDE_DIR})
 set (HAVE_LIBBOOST_IOSTREAMS 1)
 set (P4C_LIB_DEPS "${P4C_LIB_DEPS};${Boost_LIBRARIES}")
@@ -381,7 +378,9 @@ endforeach(ext)
 
 add_subdirectory (frontends)
 add_subdirectory (midend)
-add_subdirectory (control-plane)
+if(ENABLE_CONTROL_PLANE)
+    add_subdirectory (control-plane)
+endif()
 
 # With the current implementation of ir-generator, all targets share the
 # same ir-generated.h and ir-generated.cpp file, which means all targets
