@@ -126,6 +126,44 @@ else()
 endif()
 
 
+#################### CLANG-TIDY
+
+# TODO: Add files here once clang-tidy is fast enough.
+# file(
+#   GLOB_RECURSE P4C_CLANG_TIDY_LINT_LIST  FOLLOW_SYMLINKS
+# )
+# add_clang_tidy_files(${P4C_SOURCE_DIR} "${P4C_CLANG_TIDY_LINT_LIST}")
+
+find_program(CLANG_TIDY_CMD clang-tidy)
+
+if(NOT ${CLANG_TIDY_CMD})
+  # Retrieve the global clang-tidy property.
+  get_property(CLANG_TIDY_FILES GLOBAL PROPERTY CLANG_TIDY-files)
+  if(DEFINED CLANG_TIDY_FILES)
+    # Write the list to a file.
+    # We need to do this as too many files will reach the shell argument limit.
+    set(CLANG_TIDY_TXT_FILE ${P4C_BINARY_DIR}/clang_tidy_files.txt)
+    list(SORT CLANG_TIDY_FILES)
+    file(WRITE ${CLANG_TIDY_TXT_FILE} "${CLANG_TIDY_FILES}")
+    set(CLANG_TIDY_CMD clang-tidy)
+    add_custom_target(
+      clang-tidy
+      COMMAND xargs -a ${CLANG_TIDY_TXT_FILE} -r -d '\;' ${CLANG_TIDY_CMD} -extra-arg=-std=c++17 -p ${CMAKE_BINARY_DIR}
+      WORKING_DIRECTORY ${P4C_SOURCE_DIR}
+      COMMENT "Applying clang-tidy analysis."
+    )
+    add_custom_target(
+      clang-tidy-fix-errors
+      COMMAND xargs -a ${CLANG_TIDY_TXT_FILE} -r -d '\;' ${CLANG_TIDY_CMD} -extra-arg=-std=c++17 -p ${CMAKE_BINARY_DIR} --fix
+      WORKING_DIRECTORY ${P4C_SOURCE_DIR}
+      COMMENT "Applying clang-tidy fix-its."
+    )
+  endif()
+else()
+  message(WARNING "clang-tidy executable not found. Disabling clang-tidy checks. clang-tidy can be installed with \"pip3 install --user --upgrade clang-tidy\"")
+endif()
+
+
 #################### BLACK
 
 file(
