@@ -115,7 +115,7 @@ if(CLANG_TIDY_CMD)
       COMMENT "Applying clang-tidy analysis."
     )
     add_custom_target(
-      clang-tidy-fix-errors
+      clang-tidy-apply-fix-its
       COMMAND xargs -a ${CLANG_TIDY_TXT_FILE} -r -d '\;' ${CLANG_TIDY_CMD} -p ${CMAKE_BINARY_DIR} --fix
       WORKING_DIRECTORY ${P4C_SOURCE_DIR}
       COMMENT "Applying clang-tidy fix-its."
