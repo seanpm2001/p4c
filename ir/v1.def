@@ -247,7 +247,7 @@ class CalculatedField : IAnnotated {
         v.visit(annotations, "annotations"); }
      isSemanticallyLess {
             if (static_cast<const Node *>(this) == &a_) return false;
-            if (node_type_name() != a_.node_type_name()) return node_type_name() < a_.node_type_name();
+            if (typeId() != a_.typeId()) return typeId() < a_.typeId();
             auto &a = static_cast<const CalculatedField &>(a_);
             return (field != nullptr ? a.field != nullptr ? field->isSemanticallyLess(*a.field) : false : a.field != nullptr)
             || std::lexicographical_compare(specs.begin(), specs.end(), a.specs.begin(), a.specs.end(), [](const update_or_verify &a, const update_or_verify &b) { return a.isSemanticallyLess(b); })

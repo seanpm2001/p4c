@@ -69,8 +69,8 @@ TEST(OperatorLess, Types) {
     CHECK_EQUALITY_FOR_P4C_TYPE(a, c);
 
     auto *d = new IR::Type_Boolean();
-    CHECK_LESS_FOR_P4C_TYPE(a, d);
-    CHECK_GREATER_FOR_P4C_TYPE(d, a);
+    CHECK_LESS_FOR_P4C_TYPE(d, a);
+    CHECK_GREATER_FOR_P4C_TYPE(a, d);
 
     auto *e = new IR::Type_InfInt();
     CHECK_LESS_FOR_P4C_TYPE(a, e);
@@ -153,8 +153,8 @@ TEST(OperatorLess, MixedConstants) {
 
     CHECK_LESS_FOR_P4C_EXPRESSION(d, a);
     CHECK_GREATER_FOR_P4C_EXPRESSION(a, d);
-    CHECK_LESS_FOR_P4C_EXPRESSION(d, b);
-    CHECK_GREATER_FOR_P4C_EXPRESSION(b, d);
+    CHECK_LESS_FOR_P4C_EXPRESSION(b, d);
+    CHECK_GREATER_FOR_P4C_EXPRESSION(d, b);
 }
 
 TEST(OperatorLess, ConstantVectors) {
@@ -190,8 +190,8 @@ TEST(OperatorLess, ConstantVectors) {
     auto *p5 = new IR::IndexedVector<IR::Node>(new IR::Constant(t, 0));
     auto *p6 = new IR::IndexedVector<IR::Node>(new IR::StringLiteral(new IR::Type_String(), "a"));
 
-    CHECK_LESS_FOR_P4C_NODE_VECTOR(p4, p5);
-    CHECK_GREATER_FOR_P4C_NODE_VECTOR(p5, p4);
+    CHECK_LESS_FOR_P4C_NODE_VECTOR(p5, p4);
+    CHECK_GREATER_FOR_P4C_NODE_VECTOR(p4, p5);
     CHECK_LESS_FOR_P4C_NODE_VECTOR(p4, p6);
     CHECK_GREATER_FOR_P4C_NODE_VECTOR(p6, p4);
     CHECK_LESS_FOR_P4C_NODE_VECTOR(p5, p6);

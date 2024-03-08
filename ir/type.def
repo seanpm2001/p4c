@@ -89,7 +89,7 @@ class Type_Any : Type, ITypeVar {
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
         if (Type::isSemanticallyLess(a_)) return true;
-        return node_type_name() < a_.node_type_name(); /* ignore declid */
+        return typeId() < a_.typeId(); /* ignore declid */
     }
 }
 
@@ -240,7 +240,7 @@ class Type_InfInt : Type, ITypeVar {
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
         if (Type::isSemanticallyLess(a_)) return true;
-        return node_type_name() < a_.node_type_name(); /* ignore declid */
+        return typeId() < a_.typeId(); /* ignore declid */
     }
     const Type* getP4Type() const override { return this; }
 }

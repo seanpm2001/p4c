@@ -137,8 +137,8 @@ const ordered_map<cstring, IrMethod::info_t> IrMethod::Generate = {
               << "if (static_cast<const Node *>(this) == &a_) return false;\n";
           if (auto parent = cl->getParent()) {
               buf << cl->indent << cl->indent
-                  << "if (node_type_name() != a_.node_type_name()) "
-                     "return node_type_name() < a_.node_type_name();\n";
+                  << "if (typeId() != a_.typeId()) "
+                     "return typeId() < a_.typeId();\n";
               if (parent->name != "Node") {
                   buf << cl->indent << cl->indent << "if ("
                       << parent->qualified_name(cl->containedIn)
@@ -174,8 +174,7 @@ const ordered_map<cstring, IrMethod::info_t> IrMethod::Generate = {
                   }
               }
               if (first) {  // no fields?
-                  buf << cl->indent << cl->indent
-                      << "return node_type_name() < a_.node_type_name()";
+                  buf << cl->indent << cl->indent << "return typeId() < a_.typeId()";
               }
               buf << ";" << std::endl;
           }

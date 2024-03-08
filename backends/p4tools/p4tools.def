@@ -30,7 +30,7 @@ class StateVariable : Expression {
 
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
-        if (node_type_name() != a_.node_type_name()) return node_type_name() < a_.node_type_name();
+        if (typeId() != a_.typeId()) return typeId() < a_.typeId();
         auto &a = static_cast<const StateVariable &>(a_);
         return compare(ref, a.ref) < 0;
     }
@@ -137,7 +137,7 @@ class SymbolicVariable : Expression {
 
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
-        if (node_type_name() !=  a_.node_type_name()) return node_type_name() <  a_.node_type_name();
+        if (typeId() !=  a_.typeId()) return typeId() <  a_.typeId();
         auto &a = static_cast<const SymbolicVariable &>(a_);
         return label < a.label; /* ignore type */
     }
@@ -226,7 +226,7 @@ public:
 
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
-        if (node_type_name() !=  a_.node_type_name()) return node_type_name() <  a_.node_type_name();
+        if (typeId() !=  a_.typeId()) return typeId() <  a_.typeId();
         auto &a = static_cast<const ConcolicVariable &>(a_);
         return label < a.label; /* ignore type */
     }

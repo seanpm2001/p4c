@@ -230,7 +230,7 @@ class AnnotationToken {
     dbprint { out << text; }
     isSemanticallyLess {
         if (static_cast<const Node *>(this) == &a_) return false;
-        if (node_type_name() != a_.node_type_name()) return node_type_name() < a_.node_type_name();
+        if (typeId() != a_.typeId()) return typeId() < a_.typeId();
         auto &a = static_cast<const AnnotationToken &>(a_);
         return IR::isSemanticallyLess(token_type, a.token_type)
         || IR::isSemanticallyLess(text, a.text)
