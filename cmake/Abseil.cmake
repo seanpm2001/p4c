@@ -20,7 +20,7 @@ macro(p4c_obtain_abseil)
     endif()
   else()
     set(P4C_ABSEIL_VERSION "20240116.1")
-    message("Fetching Abseil version ${P4C_ABSEIL_VERSION} for P4C...")
+    message(STATUS "Fetching Abseil version ${P4C_ABSEIL_VERSION} for P4C...")
 
     # Unity builds do not work for Abseil...
     set(CMAKE_UNITY_BUILD_PREV ${CMAKE_UNITY_BUILD})
@@ -48,7 +48,7 @@ macro(p4c_obtain_abseil)
 
     # Suppress warnings for all Abseil targets.
     get_all_targets(ABSL_BUILD_TARGETS ${absl_SOURCE_DIR})
-    foreach(target in ${ABSL_BUILD_TARGETS})
+    foreach(target ${ABSL_BUILD_TARGETS})
       if(target MATCHES "absl_*")
         # Do not suppress warnings for Abseil library targets that are aliased.
         get_target_property(target_type ${target} TYPE)
@@ -63,5 +63,5 @@ macro(p4c_obtain_abseil)
     set(FETCHCONTENT_QUIET ${FETCHCONTENT_QUIET_PREV})
   endif()
 
-  message("Done with setting up Abseil for P4C.")
+  message(STATUS "Done with setting up Abseil for P4C.")
 endmacro(p4c_obtain_abseil)
